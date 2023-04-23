@@ -1,1 +1,30 @@
+# Java build artifacts
+*.class
+*.jar
+/target/
 /bin/
+/build/
+/dist/
+/.gradle/
+/.idea/
+/.mvn/
+/*.log
+
+# JMapViewer
+/libraries/JMapViewer.jar
+
+# macOS specific files
+.DS_Store
+.svn
+._*
+
+# Eclipse specific files
+.settings/
+.project
+.classpath
+
+# IntelliJ IDEA specific files
+.idea/
+*.iml
+*.ipr
+*.iws
