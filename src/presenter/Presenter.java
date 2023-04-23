@@ -1,14 +1,14 @@
-package controller;
+package presenter;
 
 
 import model.Model;
 import view.View;
 
-public class Controller {
+public class Presenter {
 	private Model model;
 	private View view;
 	
-	public Controller(View view, Model model) {
+	public Presenter(View view, Model model) {
 		this.view = view;
 		this.model = model;
 	}
