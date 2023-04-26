@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -36,7 +37,10 @@ public class View {
 	private JFrame frame;
 	private JMapViewer map;
 	private ArrayList<Coordinate> coordinatesOnClick;
-	private JButton menuStartButton = new JButton();
+	private JButton gameStartButton = new JButton();
+	private JLabel kilometerCostText = new JLabel();
+	private JLabel longConectionCostText = new JLabel();
+	private JLabel provinceBorderCostText = new JLabel();
 	private JTextField kilometerCost = new JTextField();
 	private JTextField longConectionCost = new JTextField();
 	private JTextField provinceBorderCost = new JTextField();
@@ -68,55 +72,51 @@ public class View {
 
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 900, 900);
+		frame.setBounds(100, 100, 680, 525);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		frame.setTitle("Mapardo");
-		
-		map = new JMapViewer();
-		map.setZoomControlsVisible(false);
-		Coordinate coordinate = new Coordinate(-34.451, -64.450);
-		map.setDisplayPosition(coordinate, 6);
-		frame.add(map);
-
-		coordinatesOnClick = new ArrayList<Coordinate>();
-		userClickedCoordinates();
-
 	}
 	
 	public void initializeView() {
 		this.frame.setVisible(true);
 	}
 	
-	public void generateMenu() {
+	public void generateMenu() {		
 		JLabel menuTitle = new JLabel("Bienvenido al Mapardo!");
 		menuTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		menuTitle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		menuTitle.setBounds(100, 100, 900, 900);
+		menuTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		menuTitle.setBounds(184, 66, 264, 53);
 		frame.getContentPane().add(menuTitle);
 		
-		//aca agregaria JLabels adelante con el texto que les puse a estos JTextFields, es un placeholder para testear
-		
-		kilometerCost = new JTextField("Ingrese el costo deseado por km");
-		kilometerCost.setBounds(200, 150, 100, 25);
+		kilometerCostText = new JLabel("Ingrese el costo deseado por KM");
+		kilometerCostText.setBounds(150, 150, 250, 25);
+        frame.getContentPane().add(kilometerCostText);        
+		kilometerCost = new JTextField("");
+		kilometerCost.setBounds(400, 150, 100, 25);
         frame.getContentPane().add(kilometerCost);
-
-        longConectionCost = new JTextField("Aumento en caso de superar los 300km");
-        longConectionCost.setBounds(200, 200, 100, 25);
+        
+        longConectionCostText = new JLabel("Aumento en caso de superar los 300KM");
+        longConectionCostText.setBounds(150, 200, 250, 25);
+        frame.getContentPane().add(longConectionCostText);
+        longConectionCost = new JTextField("");
+        longConectionCost.setBounds(400, 200, 100, 25);
         frame.getContentPane().add(longConectionCost);
 
-        provinceBorderCost = new JTextField("Costo por cruze de provincia");
-        provinceBorderCost.setBounds(200, 250, 100, 25);
+        provinceBorderCostText = new JLabel("Costo por cruze de provincia");
+        provinceBorderCostText.setBounds(150, 250, 250, 25);
+        frame.getContentPane().add(provinceBorderCostText);        
+        provinceBorderCost = new JTextField("");
+        provinceBorderCost.setBounds(400, 250, 100, 25);
         frame.getContentPane().add(provinceBorderCost);
-
-
-		menuStartButton.setBounds(260, 379, 85, 21);
-		
-		menuStartButton.setText("Comenzar!");
-		menuStartButton.setHorizontalAlignment(SwingConstants.CENTER);
-		frame.getContentPane().add(menuStartButton);
-		
-		
+	
+        gameStartButton.setBounds(250, 350, 200, 50);
+		gameStartButton.setText("Comenzar!");
+		gameStartButton.setHorizontalAlignment(SwingConstants.CENTER);
+		frame.getContentPane().add(gameStartButton);	
 	}
+	
+
 	
 	//podriamos hacer que el nombre que le pongan el nodo nuevo sea si o si el nombre de una provincia
 	private void userClickedCoordinates() {
@@ -137,6 +137,51 @@ public class View {
 			}
 		});
 	}
+	
+	private void showMap() {
+		frame.getContentPane().setLayout(null);
+		map = new JMapViewer();
+		map.setZoomControlsVisible(false);
+		Coordinate coordinate = new Coordinate(-34.451, -64.450);
+		map.setDisplayPosition(coordinate, 6);
+		frame.add(map);
+		
+		coordinatesOnClick = new ArrayList<Coordinate>();
+		userClickedCoordinates();
+	}
+	
+	public JButton getGameStartButton() {
+		return gameStartButton;
+	}
+	
+	public void addActionListenerToButton(ActionListener listener, JButton button) {
+		button.addActionListener(listener);		
+	}
+	
+	public void prepareScreen() {
+		wipeOutPreviousScreen();
+		showMap();
+	}
+
+	public void wipeOutPreviousScreen() {
+		for (Component c : frame.getContentPane().getComponents()) {
+			frame.getContentPane().remove(c);
+			frame.getContentPane().revalidate();
+		}
+	}
+	
+	public void userInputs() {
+		try {
+		int kilometerCostInput = Integer.parseInt(kilometerCost.getText());;
+		int longConectionCostInput = Integer.parseInt(longConectionCost.getText());;
+		int provinceBorderCostInput = Integer.parseInt(provinceBorderCost.getText());;
+		}
+		catch (Exception error) {
+			JOptionPane.showMessageDialog(null, "Solo se permiten numeros!");
+		}
+		
+	}
+	
 		
 
 }
