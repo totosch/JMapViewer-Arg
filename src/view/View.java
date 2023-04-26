@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -17,6 +18,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.JLabel;
 
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
@@ -32,7 +36,15 @@ public class View {
 	private JFrame frame;
 	private JMapViewer map;
 	private ArrayList<Coordinate> coordinatesOnClick;
-	private Coordinate clickedCoordinate;
+	private JButton menuStartButton = new JButton();
+	private JTextField kilometerCost = new JTextField();
+	private JTextField longConectionCost = new JTextField();
+	private JTextField provinceBorderCost = new JTextField();
+	private int kilometerCostInput;
+	private int longConectionCostInput;
+	private int provinceBorderCostInput;
+	
+	
 
 	/**
 	 * Launch the application.
@@ -50,22 +62,16 @@ public class View {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public View() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 900);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Mapardo");
-
+		
 		map = new JMapViewer();
 		map.setZoomControlsVisible(false);
 		Coordinate coordinate = new Coordinate(-34.451, -64.450);
@@ -77,6 +83,42 @@ public class View {
 
 	}
 	
+	public void initializeView() {
+		this.frame.setVisible(true);
+	}
+	
+	public void generateMenu() {
+		JLabel menuTitle = new JLabel("Bienvenido al Mapardo!");
+		menuTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		menuTitle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		menuTitle.setBounds(100, 100, 900, 900);
+		frame.getContentPane().add(menuTitle);
+		
+		//aca agregaria JLabels adelante con el texto que les puse a estos JTextFields, es un placeholder para testear
+		
+		kilometerCost = new JTextField("Ingrese el costo deseado por km");
+		kilometerCost.setBounds(200, 150, 100, 25);
+        frame.getContentPane().add(kilometerCost);
+
+        longConectionCost = new JTextField("Aumento en caso de superar los 300km");
+        longConectionCost.setBounds(200, 200, 100, 25);
+        frame.getContentPane().add(longConectionCost);
+
+        provinceBorderCost = new JTextField("Costo por cruze de provincia");
+        provinceBorderCost.setBounds(200, 250, 100, 25);
+        frame.getContentPane().add(provinceBorderCost);
+
+
+		menuStartButton.setBounds(260, 379, 85, 21);
+		
+		menuStartButton.setText("Comenzar!");
+		menuStartButton.setHorizontalAlignment(SwingConstants.CENTER);
+		frame.getContentPane().add(menuStartButton);
+		
+		
+	}
+	
+	//podriamos hacer que el nombre que le pongan el nodo nuevo sea si o si el nombre de una provincia
 	private void userClickedCoordinates() {
 		map.addMouseListener(new MouseAdapter() {
 			@Override
@@ -95,6 +137,6 @@ public class View {
 			}
 		});
 	}
-
+		
 
 }

@@ -12,5 +12,10 @@ public class Presenter {
 		this.view = view;
 		this.model = model;
 	}
+	
+	public void startGame() {
+		view.initializeView();
+		view.generateMenu();
+	}
 
 }
