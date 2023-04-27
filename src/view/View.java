@@ -138,14 +138,13 @@ public class View {
 		});
 	}
 	
-	private void showMap() {
-		frame.getContentPane().setLayout(null);
+	private void showMap() {	
 		map = new JMapViewer();
 		map.setZoomControlsVisible(false);
 		Coordinate coordinate = new Coordinate(-34.451, -64.450);
 		map.setDisplayPosition(coordinate, 6);
 		frame.add(map);
-		
+
 		coordinatesOnClick = new ArrayList<Coordinate>();
 		userClickedCoordinates();
 	}

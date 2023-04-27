@@ -23,8 +23,7 @@ public class Presenter {
 		view.generateMenu();
 	}
 	
-	class ScreenChanger implements ActionListener {       
-			
+	class ScreenChanger implements ActionListener {       			
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.prepareScreen();	
