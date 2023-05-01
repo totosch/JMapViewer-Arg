@@ -74,8 +74,8 @@ public class View {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 680, 525);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
 		frame.setTitle("Mapardo");
+		frame.getContentPane().setLayout(null);
 	}
 	
 	public void initializeView() {
@@ -83,6 +83,7 @@ public class View {
 	}
 	
 	public void generateMenu() {		
+		
 		JLabel menuTitle = new JLabel("Bienvenido al Mapardo!");
 		menuTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		menuTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -129,6 +130,7 @@ public class View {
 					MapMarker marker = new MapMarkerDot(nombre, clickedCoordinate);
 					map.addMapMarker(marker);
 					coordinatesOnClick.add(clickedCoordinate);
+					System.out.println(clickedCoordinate);
 					if (coordinatesOnClick.size() >= 2) {
 						LineGenerator polyLine = new LineGenerator(coordinatesOnClick);
 						map.addMapPolygon(polyLine);
@@ -138,7 +140,7 @@ public class View {
 		});
 	}
 	
-	private void showMap() {	
+	private void showMap() {		
 		map = new JMapViewer();
 		map.setZoomControlsVisible(false);
 		Coordinate coordinate = new Coordinate(-34.451, -64.450);
@@ -148,15 +150,7 @@ public class View {
 		coordinatesOnClick = new ArrayList<Coordinate>();
 		userClickedCoordinates();
 	}
-	
-	public JButton getGameStartButton() {
-		return gameStartButton;
-	}
-	
-	public void addActionListenerToButton(ActionListener listener, JButton button) {
-		button.addActionListener(listener);		
-	}
-	
+		
 	public void prepareScreen() {
 		wipeOutPreviousScreen();
 		showMap();
@@ -179,6 +173,14 @@ public class View {
 			JOptionPane.showMessageDialog(null, "Solo se permiten numeros!");
 		}
 		
+	}
+	
+	public JButton getGameStartButton() {
+		return gameStartButton;
+	}
+	
+	public void addActionListenerToButton(ActionListener listener, JButton button) {
+		button.addActionListener(listener);		
 	}
 	
 		
