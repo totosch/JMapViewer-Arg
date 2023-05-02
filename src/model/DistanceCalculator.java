@@ -15,10 +15,10 @@ public class DistanceCalculator {
     }
 
     public static void main(String[] args) {
-        double originLatitude = -31.409912194070973;
-        double originLongitude = -64.22607421875;
+        double originLatitude = -31.522361470421426;
+        double originLongitude = -68.5546875;
         double destinationLatitude = -34.61512668346219;
-        double destinationLongitude = -58.4912109375;
+        double destinationLongitude = -58.42529296875;
 
         double distance = distance(originLatitude, originLongitude, destinationLatitude, destinationLongitude);
 

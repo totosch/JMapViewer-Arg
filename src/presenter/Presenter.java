@@ -26,7 +26,7 @@ public class Presenter {
 	class ScreenChanger implements ActionListener {       			
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			view.prepareScreen();	
+			view.prepareScreen();
 			view.userInputs();
 			}			
 		}		
