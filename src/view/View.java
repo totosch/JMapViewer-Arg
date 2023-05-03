@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -161,9 +162,9 @@ public class View {
 	
 	public void userInputs() {
 		try {
-		int kilometerCostInput = Integer.parseInt(kilometerCost.getText());;
-		int longConectionCostInput = Integer.parseInt(longConectionCost.getText());;
-		int provinceBorderCostInput = Integer.parseInt(provinceBorderCost.getText());;
+		kilometerCostInput = Integer.parseInt(kilometerCost.getText());;
+		longConectionCostInput = Integer.parseInt(longConectionCost.getText());;
+		provinceBorderCostInput = Integer.parseInt(provinceBorderCost.getText());;
 		System.out.println(kilometerCostInput);
 		System.out.println(longConectionCostInput);
 		System.out.println(provinceBorderCostInput);
@@ -176,6 +177,18 @@ public class View {
 		return gameStartButton;
 	}
 	
+	public int getKilometerCost() {
+		return kilometerCostInput;
+	}
+	
+	public int getLongConectionCost() {
+		return longConectionCostInput;
+	}
+	
+	public int getProvinceBorderCost() {
+		return provinceBorderCostInput;
+	}
+	
 	public void addActionListenerToButton(ActionListener listener, JButton button) {
 		button.addActionListener(listener);		
 	}
@@ -184,16 +197,33 @@ public class View {
 		map.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					Coordinate clickedCoordinate = (Coordinate) map.getPosition(e.getPoint());
-					String nombre = JOptionPane.showInputDialog("Nodo nuevo: ");
-					MapMarker marker = new MapMarkerDot(nombre, clickedCoordinate);
-					map.addMapMarker(marker);
-					coordinatesOnClick.add(clickedCoordinate);
-					System.out.println(clickedCoordinate);
-				}
 			}
 		});
+	}
+	
+	public Coordinate mouseAction(MouseEvent e) {
+	    if (e.getButton() != MouseEvent.BUTTON1) {
+	        return null;
+	    }
+	    Coordinate clickedCoordinate = (Coordinate) map.getPosition(e.getPoint());
+	    String nombre = JOptionPane.showInputDialog("Nodo nuevo:");
+	    String provincia = JOptionPane.showInputDialog("Provincia:");
+	    MapMarker marker = new MapMarkerDot(nombre + " (" + provincia + ")", clickedCoordinate);
+	    map.addMapMarker(marker);
+	    coordinatesOnClick.add(clickedCoordinate);
+	    System.out.println(clickedCoordinate);
+
+	    return clickedCoordinate;
+	}
+
+	
+	
+	public void addActionListenerToMouseClick(MouseListener click, JMapViewer map) {
+		map.addMouseListener(click);		
+	}
+	
+	public JMapViewer getMap() {
+		return map;
 	}
 	
 	private void drawLine() {
