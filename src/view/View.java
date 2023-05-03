@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JComboBox;
 
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
@@ -42,6 +43,7 @@ public class View {
 	private JTextField kilometerCost = new JTextField();
 	private JTextField longConectionCost = new JTextField();
 	private JTextField provinceBorderCost = new JTextField();
+	JComboBox<String> provincesComboBox = new JComboBox<String>();
 	private int kilometerCostInput;
 	private int longConectionCostInput;
 	private int provinceBorderCostInput;
@@ -206,17 +208,54 @@ public class View {
 	        return null;
 	    }
 	    Coordinate clickedCoordinate = (Coordinate) map.getPosition(e.getPoint());
-	    String nombre = JOptionPane.showInputDialog("Nodo nuevo:");
-	    String provincia = JOptionPane.showInputDialog("Provincia:");
-	    MapMarker marker = new MapMarkerDot(nombre + " (" + provincia + ")", clickedCoordinate);
+	    String nodeName = JOptionPane.showInputDialog("Nodo nuevo:");
+	    
+	    // Use a combo box to select the province
+	    JComboBox<String> provincesComboBox = new JComboBox<>();
+	    provincesComboBox.setToolTipText("Seleccione");
+	    String[] comboBoxOptions = { "Buenos Aires", "Cordoba", "Mendoza", "Entre Rios", "Corrientes", "Misiones", "Formosa", "Chaco", "Santa Fe", "Santiago del Estero", "Jujuy", "Salta", "Tucuman", "Catamarca", "La Rioja", "San Juan", "San Luis", "La Pampa", "Neuquen", "Rio Negro", "Chubut", "Santa Cruz", "Tierra del Fuego" };
+	    for (int i = 0; i < comboBoxOptions.length; i++) {
+	        provincesComboBox.addItem(comboBoxOptions[i]);
+	    }
+	    JOptionPane.showOptionDialog(null, provincesComboBox, "Seleccione la provincia", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+	    String province = (String) provincesComboBox.getSelectedItem();
+	    
+	    MapMarker marker = new MapMarkerDot(nodeName + " (" + province + ")", clickedCoordinate);
 	    map.addMapMarker(marker);
 	    coordinatesOnClick.add(clickedCoordinate);
 	    System.out.println(clickedCoordinate);
 
 	    return clickedCoordinate;
 	}
-
 	
+	public int getSelectedItemFromDimensionsBox() {
+		switch ((String) provincesComboBox.getSelectedItem()) {
+			case "Buenos Aires": return 1;
+			case "Cordoba": return 2;
+			case "Mendoza": return 3;
+			case "Entre Rios": return 4;
+			case "Corrientes": return 5;
+			case "Santiago del Estero": return 6;
+			case "Misiones": return 7;
+			case "Formosa": return 8;
+			case "Chaco": return 9;
+			case "Santa Fe": return 10;
+			case "Jujuy": return 11;
+			case "Salta": return 12;
+			case "Tucuman": return 13;
+			case "Catamarca": return 14;
+			case "La Rioja": return 15;
+			case "San Juan": return 16;
+			case "San Luis": return 17;
+			case "La Pampa": return 18;
+			case "Neuquen": return 19;
+			case "Rio Negro": return 20;
+			case "Santa Cruz": return 21;
+			case "Chubut": return 22;
+			case "Tierra del Fuego": return 23;			
+		}
+		return 1;
+	}	
 	
 	public void addActionListenerToMouseClick(MouseListener click, JMapViewer map) {
 		map.addMouseListener(click);		
