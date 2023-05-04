@@ -21,25 +21,25 @@ public class Presenter {
 		this.view = view;
 		this.model = model;
 		
-		view.addActionListenerToButton(new ScreenChanger(), view.getGameStartButton());
+		view.agregarActionListenerAlBoton(new ScreenChanger(), view.getBotonComenzarJuego());
 	}
 	
 	public void startGame() {
-		view.initializeView();
-		view.generateMenu();
+		view.inicializarView();
+		view.generarMenu();
 	}
 	
 	class ScreenChanger implements ActionListener {       			
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.prepareScreen();
-			view.userInputs();
-			view.addActionListenerToMouseClick(new MouseClick(), view.getMap());
+			view.inputsUsuario();
+			view.agregarActionListenerAlMouseClick(new MouseClick(), view.getMapa());
 			
 			GeneradorDeCostos generadorDeCostos = new GeneradorDeCostos(
-					view.getKilometerCost(),
-					view.getLongConectionCost(),
-					view.getProvinceBorderCost());
+					view.getCostoKilometro(),
+					view.getCostoConexionLarga(),
+					view.getCostoCruzeProvincia());
 			
 			model.agregarGeneradorDeCostos(generadorDeCostos);
 			}			
