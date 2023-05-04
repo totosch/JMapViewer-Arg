@@ -10,6 +10,7 @@ import org.openstreetmap.gui.jmapviewer.Coordinate;
 
 import model.GeneradorDeCostos;
 import model.Model;
+import view.UbicacionView;
 import view.View;
 
 public class Presenter {
@@ -47,7 +48,7 @@ public class Presenter {
 	class MouseClick implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			Coordinate coordinate = view.mouseAction(e);
+			UbicacionView coordinate = view.mouseAction(e);
 		}
 
 		@Override

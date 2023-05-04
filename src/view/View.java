@@ -203,7 +203,7 @@ public class View {
 		});
 	}
 	
-	public Coordinate mouseAction(MouseEvent e) {
+	public UbicacionView mouseAction(MouseEvent e) {
 	    if (e.getButton() != MouseEvent.BUTTON1) {
 	        return null;
 	    }
@@ -225,7 +225,8 @@ public class View {
 	    coordinatesOnClick.add(clickedCoordinate);
 	    System.out.println(clickedCoordinate);
 
-	    return clickedCoordinate;
+	    UbicacionView ubicacion = new UbicacionView(nodeName, province, clickedCoordinate);
+	    return ubicacion;
 	}
 	
 	public int getSelectedItemFromDimensionsBox() {
