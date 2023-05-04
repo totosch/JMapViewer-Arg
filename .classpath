@@ -18,11 +18,7 @@
 	<classpathentry kind="lib" path="C:/Users/Rodri/.p2/pool/plugins/org.eclipse.ui.workbench_3.128.0.v20230220-1021.jar" sourcepath="C:/Users/Rodri/.p2/pool/plugins/org.eclipse.ui.workbench_3.128.0.v20230220-1021.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Rodri/.p2/pool/plugins/com.ibm.icu_72.1.0.jar" sourcepath="C:/Users/Rodri/.p2/pool/plugins/com.ibm.icu_72.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Rodri/.p2/pool/plugins/org.eclipse.ui.forms_3.11.600.v20230220-0932.jar" sourcepath="C:/Users/Rodri/.p2/pool/plugins/org.eclipse.ui.forms_3.11.600.v20230220-0932.jar"/>
-	<classpathentry kind="lib" path="JMapViewer.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="JMapViewer.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
