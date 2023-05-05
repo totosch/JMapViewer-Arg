@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Model {
 	private ArrayList<Ubicacion> ubicaciones;
@@ -41,5 +42,17 @@ public class Model {
 		
 	
 		ubicaciones.add(nuevaUbicacion);
+	}
+	
+	public RespuestaPlanificacion planificarConexiones() {
+		ArbolGeneradorMinimo generador = new ArbolGeneradorMinimo(conexiones, costoPorArista);
+		ArrayList<Arista> aristas = generador.generar().getAristas();
+		
+		double costoTotal = 0;
+		for (Arista arista: aristas) {
+			costoTotal += generador.obtenerCostoPorArista(arista.getI(), arista.getJ());
+		}
+		
+		return new RespuestaPlanificacion(costoTotal, aristas);
 	}
 }

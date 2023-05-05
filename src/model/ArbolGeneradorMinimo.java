@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -14,9 +15,10 @@ public class ArbolGeneradorMinimo {
 		this.costoPorArista = costoPorArista;
 	}
 	
-	public Grafo generar() {
+	public ArbolInformacion generar() {
 		double menorCostoVecinosActuales = Double.MAX_VALUE;
 		int indiceVerticeMenorCosto = -1;
+		ArrayList<Arista> aristasFinales = new ArrayList<Arista>(grafo.tamanio() - 1);
 		
 		for (int i = 0; i < grafo.tamanio() - 1; i++) { 
 			menorCostoVecinosActuales = Double.MAX_VALUE;
@@ -35,12 +37,13 @@ public class ArbolGeneradorMinimo {
 			}
 			
 			arbol.agregarArista(i, indiceVerticeMenorCosto);
+			aristasFinales.add(new Arista(i, indiceVerticeMenorCosto));
 		}
  
-		return arbol;
+		return new ArbolInformacion(aristasFinales, arbol);
 	}
 	
-	private double obtenerCostoPorArista(int i, int j) {
+	public double obtenerCostoPorArista(int i, int j) {
 		Double arista = costoPorArista.get(Integer.toString(i) + Integer.toString(j));
 		
 		if (arista == null) {
