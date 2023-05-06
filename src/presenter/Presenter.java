@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import org.openstreetmap.gui.jmapviewer.Coordinate;
-
 import model.GeneradorDeCostos;
 import model.Model;
+import model.RespuestaPlanificacion;
+import model.Ubicacion;
 import view.UbicacionView;
 import view.View;
 
@@ -32,9 +32,11 @@ public class Presenter {
 	class ScreenChanger implements ActionListener {       			
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			view.prepareScreen();
+			view.prepararPantalla();
 			view.inputsUsuario();
+			
 			view.agregarActionListenerAlMouseClick(new MouseClick(), view.getMapa());
+			view.agregarActionListenerAlBoton(new PlanificationRequest(), view.getBotonDibujarLinea());
 			
 			GeneradorDeCostos generadorDeCostos = new GeneradorDeCostos(
 					view.getCostoKilometro(),
@@ -42,13 +44,31 @@ public class Presenter {
 					view.getCostoCruzeProvincia());
 			
 			model.agregarGeneradorDeCostos(generadorDeCostos);
-			}			
-		}	
+		}			
+	}	
+	
+	class PlanificationRequest implements ActionListener {       			
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			RespuestaPlanificacion planificacion = model.planificarConexiones();  
+			
+			view.dibujarPlanificacion(planificacion.getPosiciones());
+		}			
+	}	
 	
 	class MouseClick implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			UbicacionView coordinate = view.mouseAction(e);
+			UbicacionView ubicacionVista = view.clickearMapa(e);
+			try {
+				model.agregarUbicacion(
+						ubicacionVista.getNombre(), 
+						ubicacionVista.getProvincia(),
+						ubicacionVista.getCoordenada().getLat(),
+						ubicacionVista.getCoordenada().getLon());
+			} catch (Exception e1) {
+				view.showMessageDialog("Ocurrio un problema al guardar la ubicacion, intente de nuevo");
+			}
 		}
 
 		@Override

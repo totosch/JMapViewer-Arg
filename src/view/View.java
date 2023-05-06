@@ -32,11 +32,10 @@ public class View {
 
 	private JFrame frame;
 	private JMapViewer map;
-	private ArrayList<Coordinate> coordenadasClickeadas;
 	private JPanel panelMapa = new JPanel();
 	private JPanel panelBotones = new JPanel();
 	private JButton botonComenzarJuego = new JButton();
-	private JButton dibujarLineaBoton = new JButton();
+	private JButton botonDibujarLinea = new JButton();
 	private JLabel textoCostoPorKilometro = new JLabel();
 	private JLabel textoConexionLarga = new JLabel();
 	private JLabel textoCruzeProvincia = new JLabel();
@@ -44,6 +43,9 @@ public class View {
 	private JTextField costoConexionLarga = new JTextField();
 	private JTextField costoCruzeProvincia = new JTextField();
 	JComboBox<String> provinciasComboBox = new JComboBox<String>();
+	
+	private ArrayList<Coordinate> coordenadasClickeadas;
+	
 	private int costoKilometroInput;
 	private int costoConexionLargaInput;
 	private int costoCruzeProvinciaInput;
@@ -122,7 +124,11 @@ public class View {
 	    frame.getContentPane().add(botonComenzarJuego);
 	}
 
-	
+		
+	public void prepararPantalla() {
+		borrarPantallaAnterior();
+		showMapa();				
+	}
 	
 	private void showMapa() {		
 		frame.setBounds(100, 100, 800, 600);
@@ -146,13 +152,11 @@ public class View {
 		panelMapa.add(map);
 
 		coordenadasClickeadas = new ArrayList<Coordinate>();
-		coordenadasClickeadasPorUsuario();
-		dibujarLinea();
-	}
-		
-	public void prepareScreen() {
-		borrarPantallaAnterior();
-		showMapa();				
+
+		botonDibujarLinea = new JButton("Dibujar Linea");
+		botonDibujarLinea.setBounds(10, 11, 195, 23);
+		botonDibujarLinea.setBounds(100, 20, 125, 50);
+		panelBotones.add(botonDibujarLinea);
 	}
 
 	public void borrarPantallaAnterior() {
@@ -167,9 +171,6 @@ public class View {
 		costoKilometroInput = Integer.parseInt(costoPorKilometro.getText());;
 		costoConexionLargaInput = Integer.parseInt(costoConexionLarga.getText());;
 		costoCruzeProvinciaInput = Integer.parseInt(costoCruzeProvincia.getText());;
-		System.out.println(costoKilometroInput);
-		System.out.println(costoConexionLargaInput);
-		System.out.println(costoCruzeProvinciaInput);
 		} catch (Exception error) {
 			JOptionPane.showMessageDialog(null, "Solo se permiten numeros!");
 		}		
@@ -177,6 +178,10 @@ public class View {
 	
 	public JButton getBotonComenzarJuego() {
 		return botonComenzarJuego;
+	}
+	
+	public JButton getBotonDibujarLinea () {
+		return botonDibujarLinea;
 	}
 	
 	public int getCostoKilometro() {
@@ -191,22 +196,23 @@ public class View {
 		return costoCruzeProvinciaInput;
 	}
 	
+	public JMapViewer getMapa() {
+		return map;
+	}
+	
+	public void showMessageDialog(String mensaje) {
+		JOptionPane.showMessageDialog(null, mensaje);
+	}
+	
 	public void agregarActionListenerAlBoton(ActionListener listener, JButton button) {
 		button.addActionListener(listener);		
 	}
 	
-	private void coordenadasClickeadasPorUsuario() {
-		map.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-	}
-	
-	public UbicacionView mouseAction(MouseEvent e) {
+	public UbicacionView clickearMapa(MouseEvent e) {
 	    if (e.getButton() != MouseEvent.BUTTON1) {
 	        return null;
 	    }
+	    
 	    Coordinate coordenadaClickeada = (Coordinate) map.getPosition(e.getPoint());
 	    String nombreNodo = JOptionPane.showInputDialog("Nodo nuevo:");
 	    
@@ -223,10 +229,19 @@ public class View {
 	    MapMarker marker = new MapMarkerDot(nombreNodo + " (" + province + ")", coordenadaClickeada);
 	    map.addMapMarker(marker);
 	    coordenadasClickeadas.add(coordenadaClickeada);
-	    System.out.println(coordenadaClickeada);
 
 	    UbicacionView ubicacion = new UbicacionView(nombreNodo, province, coordenadaClickeada);
 	    return ubicacion;
+	}
+	
+	public void dibujarPlanificacion(ArrayList<Integer> posiciones) {
+		ArrayList<Coordinate> coordenadasFinales = new ArrayList<Coordinate>();
+		for (int i = 0; i < posiciones.size(); i++) {
+			coordenadasFinales.add(coordenadasClickeadas.get(i));
+		}
+		
+		LineGenerator polyLine = new LineGenerator(coordenadasClickeadas);
+		map.addMapPolygon(polyLine);
 	}
 	
 	public int getProvinciaFromDimensionsBox() {
@@ -261,22 +276,4 @@ public class View {
 	public void agregarActionListenerAlMouseClick(MouseListener click, JMapViewer map) {
 		map.addMouseListener(click);		
 	}
-	
-	public JMapViewer getMapa() {
-		return map;
-	}
-	
-	private void dibujarLinea() {
-		dibujarLineaBoton = new JButton("Dibujar Linea");
-		dibujarLineaBoton.setBounds(10, 11, 195, 23);
-		dibujarLineaBoton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				LineGenerator polyLine = new LineGenerator(coordenadasClickeadas);
-				map.addMapPolygon(polyLine);
-			}
-		});
-		dibujarLineaBoton.setBounds(100, 20, 125, 50);
-		panelBotones.add(dibujarLineaBoton);
-	}
-
 }
