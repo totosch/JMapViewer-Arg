@@ -212,11 +212,12 @@ public class View {
 	    if (e.getButton() != MouseEvent.BUTTON1) {
 	        return null;
 	    }
-	    
 	    Coordinate coordenadaClickeada = (Coordinate) map.getPosition(e.getPoint());
 	    String nombreNodo = JOptionPane.showInputDialog("Nodo nuevo:");
+		if (nombreNodo == null) {
+			   return null;
+			}
 	    
-	    // Use a combo box to select the province
 	    JComboBox<String> provinciasComboBox = new JComboBox<>();
 	    provinciasComboBox.setToolTipText("Seleccione");
 	    String[] comboBoxOptions = { "Buenos Aires", "Cordoba", "Mendoza", "Entre Rios", "Corrientes", "Misiones", "Formosa", "Chaco", "Santa Fe", "Santiago del Estero", "Jujuy", "Salta", "Tucuman", "Catamarca", "La Rioja", "San Juan", "San Luis", "La Pampa", "Neuquen", "Rio Negro", "Chubut", "Santa Cruz", "Tierra del Fuego" };
