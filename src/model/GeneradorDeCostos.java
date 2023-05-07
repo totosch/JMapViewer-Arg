@@ -15,7 +15,9 @@ public class GeneradorDeCostos {
 	
 	public double generarCostoPorDistancia(double distancia, boolean mismaProvincia) {
 		double porcentajeAumento = distancia > 300 ? porcentajeAumentoMayorA300km : 1;
+		System.out.println("porcentajeAumento: " + porcentajeAumento);
 		double costo = distancia * costoPorKilometro;
-		return (costo * porcentajeAumento) + (mismaProvincia ? costoFijoProvinciasDistintas : 0);
+		System.out.println("costoCasi: " + costo);
+		return (costo * porcentajeAumento) + (mismaProvincia ?  0 : costoFijoProvinciasDistintas);
 	}
 }

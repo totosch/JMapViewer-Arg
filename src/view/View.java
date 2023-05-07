@@ -155,7 +155,7 @@ public class View {
 
 		coordenadasClickeadas = new ArrayList<Coordinate>();
 
-		botonDibujarLinea = new JButton("Dibujar Linea");
+		botonDibujarLinea = new JButton("Planificar Conexiones");
 		botonDibujarLinea.setBounds(10, 11, 195, 23);
 		botonDibujarLinea.setBounds(100, 20, 125, 50);
 		panelBotones.add(botonDibujarLinea);

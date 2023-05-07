@@ -32,6 +32,8 @@ public class Model {
 			Ubicacion ubicacionActual = ubicaciones.get(i);
 			double distancia = DistanceCalculator.distance(nuevaUbicacion.getLatitud(), nuevaUbicacion.getLongitud(), ubicacionActual.getLatitud(), ubicacionActual.getLongitud());
 			boolean mismaProvincia = provincia.equals(ubicacionActual.getProvincia());
+			
+			System.out.println("misma provincia: " + mismaProvincia);
 					
 			double costo = generadorDeCostos.generarCostoPorDistancia(distancia, mismaProvincia);
 			
