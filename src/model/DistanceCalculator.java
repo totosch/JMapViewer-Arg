@@ -21,7 +21,5 @@ public class DistanceCalculator {
         double destinationLongitude = -58.42529296875;
 
         double distance = distance(originLatitude, originLongitude, destinationLatitude, destinationLongitude);
-
-        System.out.println("The distance between the two coordinates is " + distance + " km.");
     }
 }

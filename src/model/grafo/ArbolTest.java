@@ -28,8 +28,6 @@ public class ArbolTest {
 		ArbolGeneradorMinimo generador = new ArbolGeneradorMinimo(aristas, 5);
 		ArbolInformacion informacionArbol = generador.generar();
 		
-		System.out.println(informacionArbol.getArbol().toString());
-
 		Arista[] aristasEsperadas = { new Arista(0, 4), new Arista(2, 4), new Arista(1, 4), new Arista(3, 2) };
 
 		for (int i = 0; i < aristasEsperadas.length; i++) {

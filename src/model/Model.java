@@ -32,8 +32,6 @@ public class Model {
 			Ubicacion ubicacionActual = ubicaciones.get(i);
 			double distancia = DistanceCalculator.distance(nuevaUbicacion.getLatitud(), nuevaUbicacion.getLongitud(), ubicacionActual.getLatitud(), ubicacionActual.getLongitud());
 			boolean mismaProvincia = provincia.equals(ubicacionActual.getProvincia());
-			
-			System.out.println("misma provincia: " + mismaProvincia);
 					
 			double costo = generadorDeCostos.generarCostoPorDistancia(distancia, mismaProvincia);
 			
@@ -47,8 +45,6 @@ public class Model {
 	public RespuestaPlanificacion planificarConexiones() {
 		ArbolGeneradorMinimo generador = new ArbolGeneradorMinimo(aristas, ubicaciones.size());
 		ArbolInformacion informacionArbol = generador.generar();
-		
-		System.out.println(informacionArbol.getArbol().toString());
 		
 		double costoTotal = 0;
 		for (Arista arista: informacionArbol.getAristas()) {
