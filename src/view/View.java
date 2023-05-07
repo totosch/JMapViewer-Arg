@@ -1,6 +1,8 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -41,6 +43,7 @@ public class View {
 	private JLabel textoCostoPorKilometro = new JLabel();
 	private JLabel textoConexionLarga = new JLabel();
 	private JLabel textoCruzeProvincia = new JLabel();
+	private JLabel labelCostoTotal = new JLabel();
 	private JTextField costoPorKilometro = new JTextField();
 	private JTextField costoConexionLarga = new JTextField();
 	private JTextField costoCruzeProvincia = new JTextField();
@@ -137,28 +140,28 @@ public class View {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		panelMapa = new JPanel();
-		panelMapa.setBounds(0, 0, 650, 600);
+		panelMapa.setBounds(0, 0, 620, 600);
 		frame.getContentPane().add(panelMapa);
 		panelMapa.setLayout(new GridLayout(1,1));
 			
 		panelBotones = new JPanel();
-		panelBotones.setBounds(655, 250, 120, 30);
+		panelBotones.setBounds(625, 250, 150, 30);
 		frame.getContentPane().add(panelBotones);	
-		panelBotones.setLayout(new GridLayout(1,1));
-		
+		panelBotones.setLayout(new GridLayout(2,1));		
 		
 		map = new JMapViewer();
 		map.setZoomControlsVisible(false);
 		Coordinate coordinate = new Coordinate(-34.451, -64.450);
 		map.setDisplayPosition(coordinate, 6);
 		panelMapa.add(map);
-
+		
 		coordenadasClickeadas = new ArrayList<Coordinate>();
-
+		
 		botonDibujarLinea = new JButton("Planificar Conexiones");
-		botonDibujarLinea.setBounds(10, 11, 195, 23);
-		botonDibujarLinea.setBounds(100, 20, 125, 50);
-		panelBotones.add(botonDibujarLinea);
+		
+		panelBotones.add(botonDibujarLinea);		
+		labelCostoTotal = new JLabel("Costo total: " );		
+		panelBotones.add(labelCostoTotal);
 	}
 
 	public void borrarPantallaAnterior() {
@@ -222,7 +225,7 @@ public class View {
 	    
 	    JComboBox<String> provinciasComboBox = new JComboBox<>();
 	    provinciasComboBox.setToolTipText("Seleccione");
-	    String[] comboBoxOptions = { "Buenos Aires", "Cordoba", "Mendoza", "Entre Rios", "Corrientes", "Misiones", "Formosa", "Chaco", "Santa Fe", "Santiago del Estero", "Jujuy", "Salta", "Tucuman", "Catamarca", "La Rioja", "San Juan", "San Luis", "La Pampa", "Neuquen", "Rio Negro", "Chubut", "Santa Cruz", "Tierra del Fuego" };
+	    String[] comboBoxOptions = { "Buenos Aires", "Catamarca", "Chaco", "Chubut", "Córdoba", "Corrientes", "Entre Ríos", "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta", "San Juan", "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero", "Tierra del Fuego", "Tucumán" };
 	    for (int i = 0; i < comboBoxOptions.length; i++) {
 	    	provinciasComboBox.addItem(comboBoxOptions[i]);
 	    }
@@ -238,19 +241,19 @@ public class View {
 	}
 	
 	public void dibujarPlanificacion(ArrayList<Arista> paresPosiciones) {
-		ArrayList<ArrayList<Coordinate>> arregloCoordenadasFinales = new ArrayList<ArrayList<Coordinate>>();
-		for (int i = 0; i < paresPosiciones.size(); i++) {
-			ArrayList<Coordinate> coordenadas = new ArrayList<Coordinate>();
-			coordenadas.add(coordenadasClickeadas.get(paresPosiciones.get(i).getI()));
-			coordenadas.add(coordenadasClickeadas.get(paresPosiciones.get(i).getJ()));
-			coordenadas.add(coordenadasClickeadas.get(paresPosiciones.get(i).getJ()));
-			arregloCoordenadasFinales.add(coordenadas);
-		}
-		
-		for (int i = 0; i < arregloCoordenadasFinales.size(); i++) {
-			LineGenerator polyLine = new LineGenerator(arregloCoordenadasFinales.get(i));
-			map.addMapPolygon(polyLine);
-		}
+		map.removeAllMapPolygons();
+	    ArrayList<ArrayList<Coordinate>> arregloCoordenadasFinales = new ArrayList<ArrayList<Coordinate>>();
+	    for (int i = 0; i < paresPosiciones.size(); i++) {
+	        ArrayList<Coordinate> coordenadas = new ArrayList<Coordinate>();
+	        coordenadas.add(coordenadasClickeadas.get(paresPosiciones.get(i).getI()));
+	        coordenadas.add(coordenadasClickeadas.get(paresPosiciones.get(i).getJ()));
+	        coordenadas.add(coordenadasClickeadas.get(paresPosiciones.get(i).getJ()));
+	        arregloCoordenadasFinales.add(coordenadas);
+	    }
+	    for (int i = 0; i < arregloCoordenadasFinales.size(); i++) {
+	        LineGenerator polyLine = new LineGenerator(arregloCoordenadasFinales.get(i));
+	        map.addMapPolygon(polyLine);
+	    }
 	}
 	
 	public int getProvinciaFromDimensionsBox() {
@@ -284,5 +287,9 @@ public class View {
 	
 	public void agregarActionListenerAlMouseClick(MouseListener click, JMapViewer map) {
 		map.addMouseListener(click);		
+	}
+
+	public void mostrarCostoTotal(double costoTotal) {	
+		labelCostoTotal.setText("Costo total: " + Double.toString(costoTotal));
 	}
 }

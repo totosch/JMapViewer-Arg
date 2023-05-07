@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -18,7 +19,7 @@ public class LineGenerator extends MapPolygonImpl {
         @Override
         public void paint(Graphics g, List<Point> points) {
             Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setColor(getColor());
+            g2d.setColor(Color.DARK_GRAY);
             g2d.setStroke(getStroke());
             Path2D path = buildPath(points);
             g2d.draw(path);

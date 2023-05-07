@@ -53,6 +53,7 @@ public class Presenter {
 			RespuestaPlanificacion planificacion = model.planificarConexiones();  
 			
 			view.dibujarPlanificacion(planificacion.getPosiciones());
+			view.mostrarCostoTotal(planificacion.getCostoTotal());
 		}			
 	}	
 	
