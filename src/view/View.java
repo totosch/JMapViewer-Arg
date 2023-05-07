@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,6 +26,7 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 
+import model.Arista;
 
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 
@@ -235,44 +237,50 @@ public class View {
 	    return ubicacion;
 	}
 	
-	public void dibujarPlanificacion(ArrayList<Integer> posiciones) {
-		ArrayList<Coordinate> coordenadasFinales = new ArrayList<Coordinate>();
-		for (int i = 0; i < posiciones.size(); i++) {
-			coordenadasFinales.add(coordenadasClickeadas.get(i));
+	public void dibujarPlanificacion(ArrayList<Arista> paresPosiciones) {
+		ArrayList<ArrayList<Coordinate>> arregloCoordenadasFinales = new ArrayList<ArrayList<Coordinate>>();
+		for (int i = 0; i < paresPosiciones.size(); i++) {
+			ArrayList<Coordinate> coordenadas = new ArrayList<Coordinate>();
+			coordenadas.add(coordenadasClickeadas.get(paresPosiciones.get(i).getI()));
+			coordenadas.add(coordenadasClickeadas.get(paresPosiciones.get(i).getJ()));
+			coordenadas.add(coordenadasClickeadas.get(paresPosiciones.get(i).getJ()));
+			arregloCoordenadasFinales.add(coordenadas);
 		}
 		
-		LineGenerator polyLine = new LineGenerator(coordenadasClickeadas);
-		map.addMapPolygon(polyLine);
+		for (int i = 0; i < arregloCoordenadasFinales.size(); i++) {
+			LineGenerator polyLine = new LineGenerator(arregloCoordenadasFinales.get(i));
+			map.addMapPolygon(polyLine);
+		}
 	}
 	
 	public int getProvinciaFromDimensionsBox() {
-		switch ((String) provinciasComboBox.getSelectedItem()) {
-			case "Buenos Aires": return 1;
-			case "Cordoba": return 2;
-			case "Mendoza": return 3;
-			case "Entre Rios": return 4;
-			case "Corrientes": return 5;
-			case "Santiago del Estero": return 6;
-			case "Misiones": return 7;
-			case "Formosa": return 8;
-			case "Chaco": return 9;
-			case "Santa Fe": return 10;
-			case "Jujuy": return 11;
-			case "Salta": return 12;
-			case "Tucuman": return 13;
-			case "Catamarca": return 14;
-			case "La Rioja": return 15;
-			case "San Juan": return 16;
-			case "San Luis": return 17;
-			case "La Pampa": return 18;
-			case "Neuquen": return 19;
-			case "Rio Negro": return 20;
-			case "Santa Cruz": return 21;
-			case "Chubut": return 22;
-			case "Tierra del Fuego": return 23;			
-		}
-		return 1;
-	}	
+        switch ((String) provinciasComboBox.getSelectedItem()) {
+            case "Buenos Aires": return 1;
+            case "Catamarca": return 2;
+            case "Chaco": return 3;
+            case "Chubut": return 4;
+            case "Córdoba": return 5;
+            case "Corrientes": return 6;
+            case "Entre Ríos": return 7;
+            case "Formosa": return 8;
+            case "Jujuy": return 9;
+            case "La Pampa": return 10;
+            case "La Rioja": return 11;
+            case "Mendoza": return 12;
+            case "Misiones": return 13;
+            case "Neuquén": return 14;
+            case "Río Negro": return 15;
+            case "Salta": return 16;
+            case "San Juan": return 17;
+            case "San Luis": return 18;
+            case "Santa Cruz": return 19;
+            case "Santa Fe": return 20;
+            case "Santiago del Estero": return 21;
+            case "Tierra del Fuego": return 22;
+            case "Tucumán": return 23;
+        }
+        return 1;
+    }
 	
 	public void agregarActionListenerAlMouseClick(MouseListener click, JMapViewer map) {
 		map.addMouseListener(click);		

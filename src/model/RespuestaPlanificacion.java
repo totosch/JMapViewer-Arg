@@ -4,17 +4,18 @@ import java.util.ArrayList;
 
 public class RespuestaPlanificacion {
 	private double costoTotal;
-	private ArrayList<Integer> posiciones;
+	private ArrayList<Arista> posiciones;
 	
-	public RespuestaPlanificacion(double costoTotal, ArrayList<Integer> posiciones) {
+	public RespuestaPlanificacion(double costoTotal, ArrayList<Arista> posiciones) {
 		this.costoTotal = costoTotal;
+		this.posiciones = posiciones;
 	}
 	
 	public double getCostoTotal() {
 		return this.costoTotal;
 	}
 	
-	public ArrayList<Integer> getPosiciones() {
+	public ArrayList<Arista> getPosiciones() {
 		return this.posiciones;
 	}
 }

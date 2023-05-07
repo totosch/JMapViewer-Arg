@@ -10,7 +10,7 @@ import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import org.openstreetmap.gui.jmapviewer.interfaces.ICoordinate;
 
 public class LineGenerator extends MapPolygonImpl {
-	
+
         public LineGenerator(List<? extends ICoordinate> points) {
             super(null, null, points);
         }
@@ -31,10 +31,9 @@ public class LineGenerator extends MapPolygonImpl {
                 Point firstPoint = points.get(0);
                 path.moveTo(firstPoint.getX(), firstPoint.getY());
                 for (Point p : points) {
-                    path.lineTo(p.getX(), p.getY());    
+                    path.lineTo(p.getX(), p.getY());
                 }
             } 
             return path;
         }
     }
-
