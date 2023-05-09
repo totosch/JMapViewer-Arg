@@ -171,13 +171,13 @@ public class View {
 			}
 		}
 	
-	public void obtenerInputsUsuario() {
+	public void obtenerInputsUsuario() throws Exception {
 		try {
 			costoKilometroInput = Integer.parseInt(costoPorKilometro.getText());;
 			costoConexionLargaInput = Integer.parseInt(costoConexionLarga.getText());;
 			costoCruzeProvinciaInput = Integer.parseInt(costoCruzeProvincia.getText());;
 		} catch (Exception exc) {
-			throw new Error("Solo se permiten numeros!");
+			throw new Exception("Solo se permiten numeros!");
 		}		
 	}
 	

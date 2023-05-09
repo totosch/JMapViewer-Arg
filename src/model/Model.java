@@ -83,7 +83,11 @@ public class Model extends SerializableJSON {
 		}
 	}
 	
-	public RespuestaPlanificacion planificarConexiones() {
+	public RespuestaPlanificacion planificarConexiones() throws Exception {
+		if (ubicaciones.size() < 3) {
+			throw new Exception("Ingrese al menos tres ubicaciones para planificar");
+		}
+		
 		ArbolGeneradorMinimo generador = new ArbolGeneradorMinimo(aristas, ubicaciones.size());
 		ArbolInformacion informacionArbol = generador.generar();
 		

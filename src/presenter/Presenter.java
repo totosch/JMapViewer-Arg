@@ -82,8 +82,8 @@ public class Presenter {
 			
 			view.dibujarUbicacionesPrecargadas(ubicacionesView);
 			entregarPlanificacion(model.planificarConexiones());
-			} catch (Error error) {
-				view.showMessageDialog(error.getMessage());
+			} catch (Exception exception) {
+				view.showMessageDialog(exception.getMessage());
 			}
 		}			
 	}	
@@ -91,7 +91,11 @@ public class Presenter {
 	class PlanificationRequest implements ActionListener {       			
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			entregarPlanificacion(model.planificarConexiones());
+			try {
+				entregarPlanificacion(model.planificarConexiones());				
+			} catch (Exception exception) {
+				view.showMessageDialog(exception.getMessage());
+			}
 		}			
 	}	
 	
