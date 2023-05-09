@@ -1,18 +1,13 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,7 +20,6 @@ import javax.swing.JComboBox;
 
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
-import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 
 import model.Arista;
@@ -40,6 +34,7 @@ public class View {
 	private JPanel panelBotones = new JPanel();
 	private JButton botonComenzarJuego = new JButton();
 	private JButton botonDibujarLinea = new JButton();
+	private JButton botonBorrarUbicacionesPrevias = new JButton();
 	private JLabel textoCostoPorKilometro = new JLabel();
 	private JLabel textoConexionLarga = new JLabel();
 	private JLabel textoCruzeProvincia = new JLabel();
@@ -105,21 +100,21 @@ public class View {
 	    textoCostoPorKilometro = new JLabel("Ingrese el costo deseado por KM");
 	    textoCostoPorKilometro.setBounds(x + 100, y + 100, 250, 25);
 	    frame.getContentPane().add(textoCostoPorKilometro);
-	    costoPorKilometro = new JTextField("");
+	    costoPorKilometro = new JTextField("1000");
 	    costoPorKilometro.setBounds(x + 350, y + 100, 100, 25);
 	    frame.getContentPane().add(costoPorKilometro);
 	    
 	    textoConexionLarga = new JLabel("Aumento en caso de superar los 300KM");
 	    textoConexionLarga.setBounds(x + 100, y + 150, 250, 25);
 	    frame.getContentPane().add(textoConexionLarga);
-	    costoConexionLarga = new JTextField("");
+	    costoConexionLarga = new JTextField("5000");
 	    costoConexionLarga.setBounds(x + 350, y + 150, 100, 25);
 	    frame.getContentPane().add(costoConexionLarga);
 	    
 	    textoCruzeProvincia = new JLabel("Costo por cruze de provincia");
 	    textoCruzeProvincia.setBounds(x + 100, y + 200, 250, 25);
 	    frame.getContentPane().add(textoCruzeProvincia);
-	    costoCruzeProvincia = new JTextField("");
+	    costoCruzeProvincia = new JTextField("20000");
 	    costoCruzeProvincia.setBounds(x + 350, y + 200, 100, 25);
 	    frame.getContentPane().add(costoCruzeProvincia);
 	    
@@ -127,6 +122,11 @@ public class View {
 	    botonComenzarJuego.setText("Comenzar!");
 	    botonComenzarJuego.setHorizontalAlignment(SwingConstants.CENTER);
 	    frame.getContentPane().add(botonComenzarJuego);
+	    
+	    botonBorrarUbicacionesPrevias.setBounds(x + 175, y + 400, 200, 30);
+	    botonBorrarUbicacionesPrevias.setText("Borrar ubicaciones previas");
+	    botonBorrarUbicacionesPrevias.setHorizontalAlignment(SwingConstants.CENTER);
+	    frame.getContentPane().add(botonBorrarUbicacionesPrevias);
 	}
 
 		
@@ -171,13 +171,13 @@ public class View {
 			}
 		}
 	
-	public void inputsUsuario() {
+	public void obtenerInputsUsuario() {
 		try {
-		costoKilometroInput = Integer.parseInt(costoPorKilometro.getText());;
-		costoConexionLargaInput = Integer.parseInt(costoConexionLarga.getText());;
-		costoCruzeProvinciaInput = Integer.parseInt(costoCruzeProvincia.getText());;
-		} catch (Exception error) {
-			JOptionPane.showMessageDialog(null, "Solo se permiten numeros!");
+			costoKilometroInput = Integer.parseInt(costoPorKilometro.getText());;
+			costoConexionLargaInput = Integer.parseInt(costoConexionLarga.getText());;
+			costoCruzeProvinciaInput = Integer.parseInt(costoCruzeProvincia.getText());;
+		} catch (Exception exc) {
+			throw new Error("Solo se permiten numeros!");
 		}		
 	}
 	
@@ -187,6 +187,10 @@ public class View {
 	
 	public JButton getBotonDibujarLinea () {
 		return botonDibujarLinea;
+	}
+	
+	public JButton getBotonBorrarUbicacionesPrevias () {
+		return botonBorrarUbicacionesPrevias;
 	}
 	
 	public int getCostoKilometro() {
@@ -240,6 +244,14 @@ public class View {
 	    return ubicacion;
 	}
 	
+	public void dibujarUbicacionesPrecargadas(ArrayList<UbicacionView> ubicaciones) {
+        for (UbicacionView ubicacion : ubicaciones) {
+	        MapMarker marker = new MapMarkerDot(ubicacion.getNombre() + "(" + ubicacion.getProvincia() + ")", ubicacion.getCoordenada());
+	        coordenadasClickeadas.add(ubicacion.getCoordenada());
+	        map.addMapMarker(marker);
+        }
+    }
+	
 	public void dibujarPlanificacion(ArrayList<Arista> paresPosiciones) {
 		map.removeAllMapPolygons();
 	    ArrayList<ArrayList<Coordinate>> arregloCoordenadasFinales = new ArrayList<ArrayList<Coordinate>>();
@@ -289,7 +301,8 @@ public class View {
 		map.addMouseListener(click);		
 	}
 
-	public void mostrarCostoTotal(double costoTotal) {	
-		labelCostoTotal.setText("Costo total: " + Double.toString(costoTotal));
-	}
+	public void mostrarCostoTotal(double costoTotal) {
+        String formattedCostoTotal = String.format("%.2f", costoTotal);
+        labelCostoTotal.setText("Costo total: $" + formattedCostoTotal);
+    }
 }

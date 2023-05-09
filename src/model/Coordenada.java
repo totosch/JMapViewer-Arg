@@ -1,23 +1,12 @@
 package model;
 
 public class Coordenada{
-	private int identificador;
 	public double latitud;
 	public double longitud;
 	
 	public Coordenada(double latitud, double longitud) {
 		this.latitud = latitud;
 		this.longitud = longitud;
-	}
-	
-	public Coordenada(int identificador, double latitud, double longitud) {
-		this.identificador = identificador;
-		this.latitud = latitud;
-		this.longitud = longitud;
-	}
-	
-	public int getIdentificador() {
-		return this.identificador;
 	}
 	
 	public double obtenerDistancia (Coordenada c1) {

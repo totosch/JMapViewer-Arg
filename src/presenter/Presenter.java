@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import model.GeneradorDeCostos;
 import model.Model;
@@ -22,6 +23,7 @@ public class Presenter {
 		this.model = model;
 		
 		view.agregarActionListenerAlBoton(new ScreenChanger(), view.getBotonComenzarJuego());
+		view.agregarActionListenerAlBoton(new DeleteInformation(), view.getBotonBorrarUbicacionesPrevias());
 	}
 	
 	public void startGame() {
@@ -29,11 +31,29 @@ public class Presenter {
 		view.generarMenu();
 	}
 	
+	private void entregarPlanificacion(RespuestaPlanificacion planificacion) {
+		view.dibujarPlanificacion(planificacion.getPosiciones());
+		view.mostrarCostoTotal(planificacion.getCostoTotal());
+	}
+	
+	class DeleteInformation implements ActionListener {       			
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				model.borrarInformacionGuardada();				
+			} catch (Exception exception) {
+				view.showMessageDialog(exception.getMessage());
+			}
+		}
+	}
+	
+	
 	class ScreenChanger implements ActionListener {       			
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			try {
+			view.obtenerInputsUsuario();
 			view.prepararPantalla();
-			view.inputsUsuario();
 			
 			view.agregarActionListenerAlMouseClick(new MouseClick(), view.getMapa());
 			view.agregarActionListenerAlBoton(new PlanificationRequest(), view.getBotonDibujarLinea());
@@ -44,16 +64,34 @@ public class Presenter {
 					view.getCostoCruzeProvincia());
 			
 			model.agregarGeneradorDeCostos(generadorDeCostos);
+			
+			ArrayList<Ubicacion> ubicacionesGuardadas = model.leerUbicacionesGuardadas();
+			
+			if (ubicacionesGuardadas == null)
+				return;
+			
+			ArrayList<UbicacionView> ubicacionesView = new ArrayList<UbicacionView>();
+			
+			for (Ubicacion ubicacion: ubicacionesGuardadas) {
+				ubicacionesView.add(new UbicacionView(
+						ubicacion.getNombre(), 
+						ubicacion.getProvincia(), 
+						ubicacion.getLatitud(), 
+						ubicacion.getLongitud()));
+			}
+			
+			view.dibujarUbicacionesPrecargadas(ubicacionesView);
+			entregarPlanificacion(model.planificarConexiones());
+			} catch (Error error) {
+				view.showMessageDialog(error.getMessage());
+			}
 		}			
 	}	
 	
 	class PlanificationRequest implements ActionListener {       			
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			RespuestaPlanificacion planificacion = model.planificarConexiones();  
-			
-			view.dibujarPlanificacion(planificacion.getPosiciones());
-			view.mostrarCostoTotal(planificacion.getCostoTotal());
+			entregarPlanificacion(model.planificarConexiones());
 		}			
 	}	
 	

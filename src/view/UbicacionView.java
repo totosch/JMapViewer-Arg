@@ -12,6 +12,12 @@ public class UbicacionView {
         this.provincia = provincia;
         this.coordenada = coordenada;
     }
+    
+    public UbicacionView (String nombre, String provincia, double latitud, double longitud) {
+        this.nombre = nombre;
+        this.provincia = provincia;
+        this.coordenada = new Coordinate(latitud, longitud);
+    }
 
     public Coordinate getCoordenada() {
     	return coordenada;

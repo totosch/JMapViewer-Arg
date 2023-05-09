@@ -1,20 +1,28 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashSet;
+
+import com.google.gson.Gson;
 
 import model.grafo.ArbolGeneradorMinimo;
 import model.grafo.ArbolInformacion;
-import model.grafo.Grafo;
 
-public class Model {
+public class Model extends SerializableJSON {
 	private ArrayList<Ubicacion> ubicaciones;
 	private GeneradorDeCostos generadorDeCostos;
 	private ArrayList<Arista> aristas;
+	private static final String nombreArchivo = "ubicaciones.txt";
+	private boolean fueBorradaInformacion;
+	
 	
 	public Model () {
 		this.ubicaciones = new ArrayList<Ubicacion>();
 		this.aristas = new ArrayList<Arista>();
+		this.fueBorradaInformacion = false;
 	}
 	
 	protected ArrayList<Ubicacion> getUbicaciones() {
@@ -42,6 +50,39 @@ public class Model {
 		ubicaciones.add(nuevaUbicacion);
 	}
 	
+	public ArrayList<Ubicacion> leerUbicacionesGuardadas() {
+		Gson gson = new Gson();
+		Model data = null;
+		
+		if (fueBorradaInformacion)
+			return null;
+			
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
+			data = gson.fromJson(br, Model.class);
+		} catch (Exception e) {
+			return null;
+		}
+			
+			
+		this.ubicaciones = data.ubicaciones;
+		this.aristas = data.aristas;
+			
+		return data.ubicaciones;
+	}
+	
+	public void borrarInformacionGuardada() {
+		File archivo = new File(nombreArchivo);
+			
+		boolean fueBorrado = archivo.delete();
+		
+		fueBorradaInformacion = true;
+			
+		if (!fueBorrado) { 
+			throw new Error("Error al borrar archivo");
+		}
+	}
+	
 	public RespuestaPlanificacion planificarConexiones() {
 		ArbolGeneradorMinimo generador = new ArbolGeneradorMinimo(aristas, ubicaciones.size());
 		ArbolInformacion informacionArbol = generador.generar();
@@ -51,6 +92,7 @@ public class Model {
 			costoTotal += arista.getPeso();
 		}
 		
+		super.generarJSON(nombreArchivo);
 		
 		return new RespuestaPlanificacion(costoTotal, informacionArbol.getAristas());
 	}
